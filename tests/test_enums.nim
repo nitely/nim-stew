@@ -161,9 +161,9 @@ suite "enums":
         C4 = 4000
 
       WithLimits = enum
-        A5 = int64.low()
+        A5 = int32.low()
         B5 = 0
-        C5 = int64.high()
+        C5 = int32.high()
 
     check:
       hasHoles(EnumWithOneValue) == false
@@ -191,9 +191,9 @@ suite "enums":
         C3
 
       EnumWithLimits = enum
-        A4 = int64.low()
+        A4 = int32.low()
         B4 = 0
-        C4 = int64.high()
+        C4 = int32.high()
 
     var
       e1 = A1
@@ -233,7 +233,7 @@ suite "enums":
       e4 == B4
       not checkedEnumAssign(e4, 1)
       e4 == B4
-      checkedEnumAssign(e4, int64.high)
+      checkedEnumAssign(e4, int32.high)
       e4 == C4
       not checkedEnumAssign(e4, -1)
       e4 == C4
