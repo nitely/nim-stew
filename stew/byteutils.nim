@@ -212,21 +212,38 @@ iterator to0xHex*(ba: openArray[byte]): char =
   for b in toHex(ba):
     yield b
 
+{.push checks: off.}
+# https://lemire.me/blog/2026/02/02/converting-data-to-hexadecimal-outputs-quickly/
+# https://github.com/nodejs/nbytes/pull/12
+func toHex(dst: var openArray[char], ba: openArray[byte]) =
+  ## Faster vectorized toHex version
+  template nibble(x: uint8): untyped =
+    # char(x + uint8('0') + (uint8(x > 9'u8) * 39'u8))
+    char(x + (if x >= 10: uint8('a') - 10 else: uint8('0')))
+
+  doAssert dst.len >= ba.len * 2
+  var i = 0
+  for c in ba:
+    dst[i+0] = nibble(c shr 4 and 0x0f'u8)
+    dst[i+1] = nibble(c and 0x0f'u8)
+    i += 2
+{.pop.}
+
 func toHex*(ba: openArray[byte]): string {.inline.} =
   ## Convert a byte-array to its hex representation
   ## Output is in lowercase
   ## No "endianness" reordering is done.
-  result = newStringOfCap(2 * ba.len)
-  for c in toHex(ba):
-    result.add c
+  result = newString(2 * ba.len)
+  toHex(result, ba)
 
 func to0xHex*(ba: openArray[byte]): string {.inline.} =
   ## Convert a byte-array to its hex representation
   ## Output is in lowercase
   ## No "endianness" reordering is done.
-  result = newStringOfCap(2 * ba.len + 2)
-  for c in to0xHex(ba):
-    result.add c
+  result = newString(2 * ba.len + 2)
+  result[0] = '0'
+  result[1] = 'x'
+  toHex(toOpenArray(result, 2, result.high), ba)
 
 func toBytes*(s: openArray[char]): seq[byte] =
   ## Convert a char array to the corresponding byte sequence - since strings in
