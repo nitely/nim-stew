@@ -151,6 +151,7 @@ suite "Byte utils":
       hexToSeqByte(bytes.toHex) == bytes
       hexToSeqByte(bytes.to0xHex) == bytes
 
+
   test "Array concatenation":
     check simpleBArray & simpleBArray ==
       [0x12.byte, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78]
