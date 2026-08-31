@@ -49,7 +49,7 @@ suite "Utf utils":
   test "Utf8 string validation":
     for (s, expected, name) in utf8Vectors:
       if validateUtf8(s) != expected:
-        checkpoint("Failed: (string)" & name)
+        checkpoint("Failed (string): " & name)
         fail()
 
   test "Utf8 bytes validation":
@@ -71,7 +71,7 @@ suite "Utf utils":
           v.push(c)
         v.valid()
       if got != expected:
-        checkpoint("Failed: (string stream)" & name)
+        checkpoint("Failed (string stream): " & name)
         fail()
 
   test "Utf8 bytes stream validation":
@@ -87,7 +87,7 @@ suite "Utf utils":
           v.push(c)
         v.valid()
       if got != expected:
-        checkpoint("Failed: (bytes stream)" & name)
+        checkpoint("Failed (bytes stream): " & name)
         fail()
 
   test "utf8 clear validator":
