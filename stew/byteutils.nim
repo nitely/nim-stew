@@ -212,19 +212,18 @@ iterator to0xHex*(ba: openArray[byte]): char =
   for b in toHex(ba):
     yield b
 
-{.push checks: off.}
 # https://lemire.me/blog/2026/02/02/converting-data-to-hexadecimal-outputs-quickly/
 # https://github.com/nodejs/nbytes/pull/12
+{.push checks: off.}
 func toHex(dst: var openArray[char], ba: openArray[byte]) =
   ## Faster vectorized toHex version
   template nibble(x: uint8): untyped =
-    # char(x + uint8('0') + (uint8(x > 9'u8) * 39'u8))
     char(x + (if x >= 10: uint8('a') - 10 else: uint8('0')))
 
   doAssert dst.len >= ba.len * 2
   var i = 0
   for c in ba:
-    dst[i+0] = nibble(c shr 4 and 0x0f'u8)
+    dst[i+0] = nibble(c shr 4)
     dst[i+1] = nibble(c and 0x0f'u8)
     i += 2
 {.pop.}
