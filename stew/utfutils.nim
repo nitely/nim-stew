@@ -1,4 +1,4 @@
-# utf8utils
+# utfutils
 # Copyright (c) 2026 Status Research & Development GmbH
 # Licensed and distributed under either of
 #   * MIT license (license terms in the root directory or at http://opensource.org/licenses/MIT).
